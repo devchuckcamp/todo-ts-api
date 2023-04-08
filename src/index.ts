@@ -14,7 +14,7 @@ dotenv.config()
 
 const app = express()
 const port = process.env.port || 3001
-const mongoConnectionString = process.env.mongodburi?.toString()
+const mongoConnectionString = process.env.mongodburi?.toString()||'mongodb+srv://santiago:password123!@cluster0.4jwmh9o.mongodb.net/?retryWrites=true&w=majority'
 const apiVersion = process.env.api_version || "V1"
 
 // Middleware
@@ -31,5 +31,6 @@ app.use(express.json())
 app.use(`/api/${apiVersion}/todo`, todoRoutes)
 
 app.listen(port, () => {
+
   console.log(`Server is running API ${apiVersion} on port ${port}`)
 });

@@ -16,7 +16,7 @@ const options = {
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.port || 3001;
-const mongoConnectionString = (_a = process.env.mongodburi) === null || _a === void 0 ? void 0 : _a.toString();
+const mongoConnectionString = ((_a = process.env.mongodburi) === null || _a === void 0 ? void 0 : _a.toString()) || 'mongodb+srv://santiago:password123!@cluster0.4jwmh9o.mongodb.net/?retryWrites=true&w=majority';
 const apiVersion = process.env.api_version || "V1";
 // Middleware
 app.use((0, cors_1.default)(options));
