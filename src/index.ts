@@ -4,7 +4,7 @@ import cors from 'cors'
 import { connect } from 'mongoose'
 import todoRoutes from './routes/todoRoutes'
 
-const allowedOrigins = process.env.front_end_domain?[process.env.front_end_domain]:'*'
+const allowedOrigins = '*'
 
 const options: cors.CorsOptions = {
   origin: allowedOrigins

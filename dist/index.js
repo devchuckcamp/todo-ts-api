@@ -9,7 +9,7 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const cors_1 = __importDefault(require("cors"));
 const mongoose_1 = require("mongoose");
 const todoRoutes_1 = __importDefault(require("./routes/todoRoutes"));
-const allowedOrigins = process.env.front_end_domain ? [process.env.front_end_domain] : '*';
+const allowedOrigins = '*';
 const options = {
     origin: allowedOrigins
 };
