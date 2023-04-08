@@ -3,13 +3,11 @@ import dotenv from 'dotenv'
 import cors from 'cors'
 import { connect } from 'mongoose'
 import todoRoutes from './routes/todoRoutes'
-import { Server, Socket } from 'socket.io'
-import http from 'http'
 
-const allowedOrigins = ['*']
+const allowedOrigins = process.env.front_end_domain??'*'
 
 const options: cors.CorsOptions = {
-  origin: ['https://todo-react-app-nine-gamma.vercel.app/']
+  origin: allowedOrigins
 };
 
 dotenv.config()
