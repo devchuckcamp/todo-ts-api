@@ -1,5 +1,5 @@
 {
-    "version": "3.1",
+    "version": 1,
     "name": "music-album",
     "builds": [
        { "src": "dist/index.js", "use": "@vercel/node" }
