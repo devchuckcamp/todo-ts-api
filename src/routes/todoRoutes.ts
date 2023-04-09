@@ -44,7 +44,20 @@ router.get('/completed', async (_, res) => {
         res.status(500).json({ message: err })
     }
 })
-
+router.get('/filter', async (req, res) => {
+    try {
+        const openTodos = await TodoModel.find({ isComplete: false }).sort({length:1,name:1})
+        const completedTodos = await TodoModel.find({ isComplete: true }).sort({length:1,name:1}).limit(PER_PAGE)
+        var result:FilteredTodosResponseDto = {
+            completedTodos:completedTodos,
+            openTodos:openTodos,
+        }
+        res.status(200).json(result)
+    } catch (err) {
+        res.status(500).json({ message: err })
+    }
+   
+})
 
 router.get('/filter/:query', async (req, res) => {
     let query = req.params.query??""

@@ -52,6 +52,20 @@ router.get('/completed', (_, res) => __awaiter(void 0, void 0, void 0, function*
         res.status(500).json({ message: err });
     }
 }));
+router.get('/filter', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const openTodos = yield todoSchema_1.TodoModel.find({ isComplete: false }).sort({ length: 1, name: 1 });
+        const completedTodos = yield todoSchema_1.TodoModel.find({ isComplete: true }).sort({ length: 1, name: 1 }).limit(Todo_1.PER_PAGE);
+        var result = {
+            completedTodos: completedTodos,
+            openTodos: openTodos,
+        };
+        res.status(200).json(result);
+    }
+    catch (err) {
+        res.status(500).json({ message: err });
+    }
+}));
 router.get('/filter/:query', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     let query = (_a = req.params.query) !== null && _a !== void 0 ? _a : "";
