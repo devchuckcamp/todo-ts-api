@@ -12,7 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const todoSchema_1 = require("../schemas/todoSchema");
 const Todo_1 = require("../config/Todo");
-//import getFilteredTodo from '../controllers/todoController'
 const router = (0, express_1.Router)();
 // Create a product
 router.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -37,7 +36,7 @@ router.get('/', (_, res) => __awaiter(void 0, void 0, void 0, function* () {
 }));
 router.get('/pending', (_, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const todos = yield todoSchema_1.TodoModel.find({ isComplete: false });
+        const todos = yield todoSchema_1.TodoModel.find({ isComplete: false }).sort({ length: 1, name: 1 });
         res.status(200).json(todos);
     }
     catch (err) {
@@ -46,7 +45,7 @@ router.get('/pending', (_, res) => __awaiter(void 0, void 0, void 0, function* (
 }));
 router.get('/completed', (_, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const todos = yield todoSchema_1.TodoModel.find({ isComplete: true }).limit(Todo_1.PER_PAGE);
+        const todos = yield todoSchema_1.TodoModel.find({ isComplete: true }).sort({ length: 1, name: 1 }).limit(Todo_1.PER_PAGE);
         res.status(200).json(todos);
     }
     catch (err) {
@@ -71,7 +70,10 @@ router.get('/filter/:query', (req, res) => __awaiter(void 0, void 0, void 0, fun
                     },
                 },
                 {
-                    $limit: Todo_1.PER_PAGE
+                    $limit: Todo_1.PER_PAGE,
+                },
+                {
+                    $sort: { length: 1, name: 1 }
                 },
                 {
                     "$match": {
@@ -94,6 +96,9 @@ router.get('/filter/:query', (req, res) => __awaiter(void 0, void 0, void 0, fun
                     },
                 },
                 {
+                    $sort: { length: 1, name: 1 }
+                },
+                {
                     "$match": {
                         "isComplete": {
                             "$eq": false,
@@ -112,7 +117,11 @@ router.get('/filter/:query', (req, res) => __awaiter(void 0, void 0, void 0, fun
         }
     }
     else {
-        res.status(200).json([]);
+        var result = {
+            completedTodos: yield todoSchema_1.TodoModel.find({ isComplete: true }).limit(Todo_1.PER_PAGE),
+            openTodos: yield todoSchema_1.TodoModel.find({ isComplete: false }),
+        };
+        res.status(200).json(result);
     }
 }));
 // Get a Todo by ID
@@ -135,6 +144,24 @@ router.put('/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         const todo = yield todoSchema_1.TodoModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
         if (todo)
             res.status(200).json(todo);
+        else
+            res.status(404).json({ message: 'Item not found' });
+    }
+    catch (err) {
+        res.status(500).json({ message: err });
+    }
+}));
+// Comoplete/Uncomplete a Todo by ID
+router.put('/complete/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        console.log(req.params.id);
+        const todo = yield todoSchema_1.TodoModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        var result = {
+            completedTodos: yield todoSchema_1.TodoModel.find({ isComplete: true }).sort({ length: 1, name: 1 }).limit(Todo_1.PER_PAGE),
+            openTodos: yield todoSchema_1.TodoModel.find({ isComplete: false }).sort({ length: 1, name: 1 }),
+        };
+        if (todo)
+            res.status(200).json(result);
         else
             res.status(404).json({ message: 'Item not found' });
     }

@@ -12,7 +12,7 @@ const options: cors.CorsOptions = {
 
 dotenv.config()
 
-const app = express()
+export const app = express()
 const port = process.env.port || 3001
 const mongoConnectionString = process.env.mongodburi?.toString()||'mongodb+srv://santiago:password123!@cluster0.4jwmh9o.mongodb.net/?retryWrites=true&w=majority'
 const apiVersion = process.env.api_version || "V1"

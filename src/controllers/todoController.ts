@@ -3,12 +3,12 @@ import ITodo from '../interfaces/ITodo'
 import { TodoModel } from '../schemas/todoSchema'
 import { PER_PAGE } from '../config/Todo'
 
-const getAllCompletedTodo = async () =>{
-    return  await TodoModel.find({ isComplete: true });
+export const getAllCompletedTodo = async () =>{
+    return  await TodoModel.find({ isComplete: true })
 }
 
-const getAllPendingTodo = async () =>{
-    return  await TodoModel.find({ isComplete: false });
+export const getAllPendingTodo = async () =>{
+    return  await TodoModel.find({ isComplete: false })
 }
 
 const getFilteredTodo = async (query:string) =>{
